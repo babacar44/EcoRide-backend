@@ -6,27 +6,28 @@ import lombok.*;
 import java.util.List;
 
 @Entity
+@Table(name = "utilisateur")
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
 public class Utilisateur {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "utilisateur_id")
+    private Long utilisateurId;
 
-    private String pseudo;
+    private String nom;
+    private String prenom;
     private String email;
-    private String motDePasse;
-    private int credit;
-    private boolean suspendu;
+    private String password;
+    private String telephone;
+    private String adresse;
+    private String dateNaissance;
+    private String photo;
+    private String pseudo;
 
-    private String role;
-
-    @OneToMany(mappedBy = "utilisateur")
-    private List<Vehicule> vehicules;
-
-    @OneToMany(mappedBy = "passager")
-    private List<Participation> participations;
-
-    @OneToMany(mappedBy = "chauffeur")
-    private List<Covoiturage> covoiturages;
+    @ManyToMany
+    @JoinTable(name = "utilisateur_role",
+        joinColumns = @JoinColumn(name = "utilisateur_id"),
+        inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private List<Role> roles;
 }

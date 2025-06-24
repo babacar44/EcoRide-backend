@@ -3,34 +3,36 @@ package fr.ecoride.model;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDateTime;
-import java.util.List;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Entity
+@Table(name = "covoiturage")
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
 public class Covoiturage {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "covoiturage_id")
+    private Long covoiturageId;
 
-    private String adresseDepart;
-    private String adresseArrivee;
-    private LocalDateTime dateHeureDepart;
-    private LocalDateTime dateHeureArrivee;
+    private LocalDate dateDepart;
+    private LocalTime heureDepart;
+    private String lieuDepart;
 
-    private int nbPlaces;
-    private double prix;
+    private LocalDate dateArrivee;
+    private LocalTime heureArrivee;
+    private String lieuArrivee;
 
-    private boolean demarre;
-    private boolean termine;
+    private String statut;
+    private int nbPlace;
+    private float prixPersonne;
 
     @ManyToOne
-    private Utilisateur chauffeur;
+    @JoinColumn(name = "utilisateur_id")
+    private Utilisateur conducteur;
 
     @ManyToOne
-    private Vehicule vehicule;
-
-    @OneToMany(mappedBy = "covoiturage")
-    private List<Participation> participations;
+    @JoinColumn(name = "voiture_id")
+    private Voiture voiture;
 }

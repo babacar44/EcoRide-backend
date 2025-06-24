@@ -5,11 +5,16 @@ spring:
     password: devpass
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
     show-sql: true
     properties:
       hibernate.format_sql: true
-
+      hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
+  sql:
+    init:
+      mode: always
+    schema-locations: classpath:schema.sql
+    data-locations: classpath:data.sql
 server:
   port: 8083
 
