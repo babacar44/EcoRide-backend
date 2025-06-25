@@ -19,7 +19,7 @@ INSERT INTO marque (libelle) VALUES ('Renault'), ('Tesla');
 INSERT INTO voiture (modele, immatriculation, energie, couleur, date_premiere_immatriculation, marque_id)
 VALUES
     ('Zoé', 'AB-123-CD', 'ELECTRIQUE', 'Bleu', '2022-03-01', 1),
-    ('Model 3', 'CD-456-EF', 'ELECTRIQUE', 'Blanc', '2023-01-15', 2);
+    ('Model 3', 'CD-456-EF', 'DIESEL', 'Blanc', '2023-01-15', 2);
 
 -- Covoiturages
 INSERT INTO covoiturage (
