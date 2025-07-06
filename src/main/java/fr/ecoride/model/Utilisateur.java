@@ -24,10 +24,13 @@ public class Utilisateur {
     private String dateNaissance;
     private String photo;
     private String pseudo;
+    private int credit;
+    private boolean suspendu;
 
     @ManyToMany
     @JoinTable(name = "utilisateur_role",
         joinColumns = @JoinColumn(name = "utilisateur_id"),
         inverseJoinColumns = @JoinColumn(name = "role_id"))
     private List<Role> roles;
+
 }

@@ -11,7 +11,9 @@ CREATE TABLE utilisateur (
      adresse VARCHAR(255),
      date_naissance DATE,
      photo VARCHAR(255),
-     pseudo VARCHAR(100) NOT NULL
+     pseudo VARCHAR(100) NOT NULL,
+     credit INT,
+     suspendu BOOLEAN DEFAULT FALSE
 );
 
 -- ROLE

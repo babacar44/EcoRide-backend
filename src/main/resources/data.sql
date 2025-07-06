@@ -1,10 +1,15 @@
 -- Données initiales pour EcoRide
 
 -- Utilisateurs
-INSERT INTO utilisateur (nom, prenom, email, password, telephone, adresse, date_naissance, photo, pseudo)
+INSERT INTO utilisateur (nom, prenom, email, password, telephone, adresse, date_naissance, photo, pseudo, credit, suspendu)
 VALUES
-    ('Dupont', 'Jean', 'jean.dupont@example.com', 'pass123', '0601020304', '10 rue de Paris', '1990-05-15', NULL, 'jdupont'),
-    ('Martin', 'Emma', 'emma.martin@example.com', 'pass456', '0605060708', '22 avenue de Lyon', '1992-08-22', NULL, 'emmartin');
+    ('Dupont', 'Jean', 'jean.dupont@example.com',
+     '$2a$10$dQtD3BVqu.7vcv.PnPbLG.nO1gKB0nI7JSLBaadn94EJbmb7KVBcG',
+     '0601020304', '10 rue de Paris', '1990-05-15', NULL, 'jdupont', 20, false),
+
+    ('Martin', 'Emma', 'emma.martin@example.com',
+     '$2a$10$dQtD3BVqu.7vcv.PnPbLG.nO1gKB0nI7JSLBaadn94EJbmb7KVBcG',
+     '0605060708', '22 avenue de Lyon', '1992-08-22', NULL, 'emmartin', 20, false);
 
 -- Rôles
 INSERT INTO role (libelle) VALUES ('USER'), ('ADMIN');

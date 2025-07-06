@@ -12,4 +12,5 @@ public class VoitureDTO {
     private String energie;
     private String couleur;
     private String datePremiereImmatriculation;
+    private String marque;
 }
