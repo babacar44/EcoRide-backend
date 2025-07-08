@@ -58,7 +58,7 @@ public class CovoiturageController {
                         .pseudo(cov.getConducteur().getPseudo())
                         .photo(cov.getConducteur().getPhoto())
                         .suspendu(false) // à adapter si le champ existe
-                        .credit(null)    // à adapter selon les besoins
+                        .credit(cov.getConducteur().getCredit())    // à adapter selon les besoins
                         .build())
                 .voiture(VoitureDTO.builder()
                         .voitureId(cov.getVoiture().getVoitureId())

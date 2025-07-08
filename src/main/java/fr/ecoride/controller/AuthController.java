@@ -5,18 +5,16 @@ import fr.ecoride.dto.AuthRequestDto;
 import fr.ecoride.dto.AuthResponseDto;
 import fr.ecoride.dto.RegisterRequestDto;
 import fr.ecoride.model.Utilisateur;
-import fr.ecoride.model.Role;
-import fr.ecoride.model.Utilisateur;
 import fr.ecoride.repository.RoleRepository;
 import fr.ecoride.repository.UtilisateurRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 @RestController
 @RequestMapping("/auth")
@@ -47,9 +45,9 @@ public class AuthController {
                 .password(passwordEncoder.encode(request.getPassword()))
                 .telephone(request.getTelephone())
                 .adresse(request.getAdresse())
-                .dateNaissance(request.getDateNaissance())
+                .dateNaissance(LocalDate.parse(request.getDateNaissance()))
                 .pseudo(request.getPseudo())
-                .credit(20)
+                .credit(new BigDecimal(20))
                 .roles(List.of(roleRepository.findByLibelle("USER")))
                 .build();
         utilisateurRepository.save(utilisateur);

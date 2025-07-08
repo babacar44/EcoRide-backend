@@ -3,6 +3,8 @@ package fr.ecoride.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -21,10 +23,12 @@ public class Utilisateur {
     private String password;
     private String telephone;
     private String adresse;
-    private String dateNaissance;
+    @Column(name = "date_naissance")
+    private LocalDate dateNaissance;
     private String photo;
     private String pseudo;
-    private int credit;
+    @Column(precision = 10, scale = 2)
+    private BigDecimal credit;
     private boolean suspendu;
 
     @ManyToMany

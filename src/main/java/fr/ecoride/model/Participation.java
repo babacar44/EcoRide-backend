@@ -15,8 +15,11 @@ public class Participation {
     private boolean valide;
 
     @ManyToOne
+    @JoinColumn(name = "passager_id")
     private Utilisateur passager;
 
     @ManyToOne
+    @JoinColumn(name = "covoiturage_id")
     private Covoiturage covoiturage;
+
 }

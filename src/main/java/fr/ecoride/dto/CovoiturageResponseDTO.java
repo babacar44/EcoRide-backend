@@ -3,6 +3,7 @@ package fr.ecoride.dto;
 import lombok.Builder;
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Data
@@ -17,7 +18,7 @@ public class CovoiturageResponseDTO {
     private String lieuArrivee;
     private String statut;
     private int nbPlace;
-    private double prixPersonne;
+    private BigDecimal prixPersonne;
     private UtilisateurDTO conducteur;
     private VoitureDTO voiture;
 }

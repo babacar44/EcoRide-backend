@@ -3,6 +3,7 @@ package fr.ecoride.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -23,10 +24,11 @@ public class Covoiturage {
     private LocalDate dateArrivee;
     private LocalTime heureArrivee;
     private String lieuArrivee;
-
     private String statut;
     private int nbPlace;
-    private float prixPersonne;
+
+    @Column(precision = 10, scale = 2)
+    private BigDecimal prixPersonne;
 
     @ManyToOne
     @JoinColumn(name = "utilisateur_id")
