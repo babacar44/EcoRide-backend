@@ -14,5 +14,6 @@ public class Preference {
     private String label;
 
     @ManyToOne
+    @JoinColumn(name = "utilisateur_id")
     private Utilisateur utilisateur;
 }

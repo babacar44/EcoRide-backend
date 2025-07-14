@@ -13,7 +13,8 @@ CREATE TABLE utilisateur (
      photo VARCHAR(255),
      pseudo VARCHAR(100) NOT NULL,
      credit INT,
-     suspendu BOOLEAN DEFAULT FALSE
+     suspendu BOOLEAN DEFAULT FALSE,
+     role_ecoride VARCHAR(255)
 );
 
 -- ROLE
@@ -42,8 +43,11 @@ CREATE TABLE voiture (
     immatriculation VARCHAR(50) NOT NULL UNIQUE,
     energie VARCHAR(50) NOT NULL,
     couleur VARCHAR(50),
-    date_premiere_immatriculation DATE,
-    marque_id INT REFERENCES marque(marque_id)
+    date_premiere_immatriculation DATE NOT NULL,
+    nb_places INT,
+    marque_id INT REFERENCES marque(marque_id),
+    utilisateur_id INT REFERENCES utilisateur(utilisateur_id)
+
 );
 
 -- COVOITURAGE
@@ -77,6 +81,7 @@ CREATE TABLE parametre (
     propriete VARCHAR(100) NOT NULL,
     valeur VARCHAR(255) NOT NULL
 );
+
 
 -- CONFIGURATION
 CREATE TABLE configuration (

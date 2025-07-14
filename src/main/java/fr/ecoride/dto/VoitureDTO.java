@@ -3,14 +3,17 @@ package fr.ecoride.dto;
 import lombok.Builder;
 import lombok.Data;
 
+import java.io.Serializable;
+
 @Data
 @Builder
-public class VoitureDTO {
+public class VoitureDTO implements Serializable {
     private Long voitureId;
-    private String modele;
     private String immatriculation;
-    private String energie;
-    private String couleur;
     private String datePremiereImmatriculation;
     private String marque;
+    private String modele;
+    private String couleur;
+    private String energie;
+    private int nbPlaces;
 }

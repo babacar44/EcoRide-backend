@@ -1,15 +1,15 @@
 -- Données initiales pour EcoRide
 
 -- Utilisateurs
-INSERT INTO utilisateur (nom, prenom, email, password, telephone, adresse, date_naissance, photo, pseudo, credit, suspendu)
+INSERT INTO utilisateur (nom, prenom, email, password, telephone, adresse, date_naissance, photo, pseudo, credit, suspendu,role_ecoride)
 VALUES
     ('Dupont', 'Jean', 'jean.dupont@example.com',
      '$2a$10$dQtD3BVqu.7vcv.PnPbLG.nO1gKB0nI7JSLBaadn94EJbmb7KVBcG',
-     '0601020304', '10 rue de Paris', '1990-05-15', NULL, 'jdupont', 20, false),
+     '0601020304', '10 rue de Paris', '1990-05-15', NULL, 'jdupont', 20, false, 'CHAUFFEUR'),
 
     ('Martin', 'Emma', 'emma.martin@example.com',
      '$2a$10$dQtD3BVqu.7vcv.PnPbLG.nO1gKB0nI7JSLBaadn94EJbmb7KVBcG',
-     '0605060708', '22 avenue de Lyon', '1992-08-22', NULL, 'emmartin', 20, false);
+     '0605060708', '22 avenue de Lyon', '1992-08-22', NULL, 'emmartin', 20, false, 'CHAUFFEUR');
 
 -- Rôles
 INSERT INTO role (libelle) VALUES ('USER'), ('ADMIN');
@@ -21,10 +21,10 @@ INSERT INTO utilisateur_role (utilisateur_id, role_id) VALUES (1, 1), (2, 1);
 INSERT INTO marque (libelle) VALUES ('Renault'), ('Tesla');
 
 -- Voitures
-INSERT INTO voiture (modele, immatriculation, energie, couleur, date_premiere_immatriculation, marque_id)
+INSERT INTO voiture (modele, immatriculation, energie, couleur, date_premiere_immatriculation,nb_places, marque_id,utilisateur_id)
 VALUES
-    ('Zoé', 'AB-123-CD', 'ELECTRIQUE', 'Bleu', '2022-03-01', 1),
-    ('Model 3', 'CD-456-EF', 'DIESEL', 'Blanc', '2023-01-15', 2);
+    ('Zoé', 'AB-123-CD', 'ELECTRIQUE', 'Bleu', '2022-03-01', 4,2,1),
+    ('Model 3', 'CD-456-EF', 'ELECTRIQUE', 'Blanc', '2023-01-15', 5,1,2);
 
 -- Covoiturages
 INSERT INTO covoiturage (
@@ -203,6 +203,13 @@ INSERT INTO parametre (propriete, valeur)
 VALUES
     ('nb_max_covoiturage_jour', '3'),
     ('plafond_credit', '50');
+
+-- Préférence
+INSERT INTO preference(label, utilisateur_id)
+VALUES
+    ('Fumeur', '1'),
+    ('Animaux', '1'),
+    ('Animaux', '2');
 
 -- Configuration
 INSERT INTO configuration DEFAULT VALUES;

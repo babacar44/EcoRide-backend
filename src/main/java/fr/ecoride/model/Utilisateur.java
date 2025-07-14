@@ -30,6 +30,8 @@ public class Utilisateur {
     @Column(precision = 10, scale = 2)
     private BigDecimal credit;
     private boolean suspendu;
+    @Column(name = "role_ecoride")
+    private String roleEcoride;
 
     @ManyToMany
     @JoinTable(name = "utilisateur_role",

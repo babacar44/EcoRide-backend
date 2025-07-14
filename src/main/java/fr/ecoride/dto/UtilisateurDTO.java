@@ -2,13 +2,14 @@ package fr.ecoride.dto;
 
 import lombok.*;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 @Getter
 @Setter
 @NoArgsConstructor @AllArgsConstructor
 @Builder
-public class UtilisateurDTO {
+public class UtilisateurDTO implements Serializable {
     private Long utilisateurId;
     private String nom;
     private String prenom;

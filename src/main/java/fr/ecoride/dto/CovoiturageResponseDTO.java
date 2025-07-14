@@ -3,12 +3,12 @@ package fr.ecoride.dto;
 import lombok.Builder;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
 @Data
 @Builder
-public class CovoiturageResponseDTO {
+public class CovoiturageResponseDTO implements Serializable {
     private Long covoiturageId;
     private String dateDepart;
     private String heureDepart;

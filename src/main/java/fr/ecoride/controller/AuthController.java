@@ -1,9 +1,9 @@
 package fr.ecoride.controller;
 
 import fr.ecoride.config.security.JwtService;
-import fr.ecoride.dto.AuthRequestDto;
-import fr.ecoride.dto.AuthResponseDto;
-import fr.ecoride.dto.RegisterRequestDto;
+import fr.ecoride.dto.AuthRequestDTO;
+import fr.ecoride.dto.AuthResponseDTO;
+import fr.ecoride.dto.RegisterRequestDTO;
 import fr.ecoride.model.Utilisateur;
 import fr.ecoride.repository.RoleRepository;
 import fr.ecoride.repository.UtilisateurRepository;
@@ -37,7 +37,7 @@ public class AuthController {
 
 
     @PostMapping("/register")
-    public ResponseEntity<AuthResponseDto> register(@RequestBody RegisterRequestDto request) {
+    public ResponseEntity<AuthResponseDTO> register(@RequestBody RegisterRequestDTO request) {
         Utilisateur utilisateur = Utilisateur.builder()
                 .nom(request.getNom())
                 .prenom(request.getPrenom())
@@ -53,11 +53,11 @@ public class AuthController {
         utilisateurRepository.save(utilisateur);
 
         String token = jwtService.generateToken(new fr.ecoride.config.security.UtilisateurDetails(utilisateur));
-        return ResponseEntity.ok(new AuthResponseDto(token));
+        return ResponseEntity.ok(new AuthResponseDTO(token));
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthResponseDto> login(@RequestBody AuthRequestDto request) {
+    public ResponseEntity<AuthResponseDTO> login(@RequestBody AuthRequestDTO request) {
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
@@ -65,13 +65,13 @@ public class AuthController {
         }
         catch (BadCredentialsException ex) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body(new AuthResponseDto("Les identifiants sont erronés"));
+                    .body(new AuthResponseDTO("Les identifiants sont erronés"));
         }
 
         Utilisateur utilisateur = utilisateurRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
 
         String token = jwtService.generateToken(new fr.ecoride.config.security.UtilisateurDetails(utilisateur));
-        return ResponseEntity.ok(new AuthResponseDto(token));
+        return ResponseEntity.ok(new AuthResponseDTO(token));
     }
 }
