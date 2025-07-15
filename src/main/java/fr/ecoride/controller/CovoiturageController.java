@@ -1,15 +1,18 @@
 package fr.ecoride.controller;
 
+import fr.ecoride.config.security.UtilisateurDetails;
+import fr.ecoride.dto.CovoiturageRequestDTO;
 import fr.ecoride.dto.CovoiturageResponseDTO;
 import fr.ecoride.dto.UtilisateurDTO;
 import fr.ecoride.dto.VoitureDTO;
 import fr.ecoride.model.Covoiturage;
 import fr.ecoride.service.ICovoiturageService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import io.swagger.v3.oas.annotations.tags.Tag;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -37,6 +40,14 @@ public class CovoiturageController {
                         .collect(Collectors.toList())
         );
     }
+
+    @PostMapping("/creer")
+    public ResponseEntity<?> publierTrajet(@RequestBody CovoiturageRequestDTO dto,
+                                           @AuthenticationPrincipal UtilisateurDetails userDetails) {
+        covoiturageService.creerTrajet(dto, userDetails.getUtilisateur());
+        return ResponseEntity.ok().build();
+    }
+
 
     private CovoiturageResponseDTO mapToDTO(Covoiturage cov) {
         return CovoiturageResponseDTO.builder()

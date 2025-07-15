@@ -1,13 +1,20 @@
 package fr.ecoride.service.impl;
 
+import fr.ecoride.dto.CovoiturageRequestDTO;
+import fr.ecoride.exception.NotFoundException;
 import fr.ecoride.model.Covoiturage;
+import fr.ecoride.model.Utilisateur;
+import fr.ecoride.model.Voiture;
 import fr.ecoride.repository.CovoiturageRepository;
+import fr.ecoride.repository.VoitureRepository;
 import fr.ecoride.service.ICovoiturageService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 @Service
@@ -15,6 +22,7 @@ import java.util.List;
 public class CovoiturageServiceImpl implements ICovoiturageService {
 
     private final CovoiturageRepository covoiturageRepository;
+    private final VoitureRepository voitureRepository;
 
     @Override
     public List<Covoiturage> rechercher(String lieuDepart, String lieuArrivee, LocalDate date) {
@@ -31,4 +39,36 @@ public class CovoiturageServiceImpl implements ICovoiturageService {
     public Covoiturage getById(Long id) {
         return covoiturageRepository.findById(id).orElse(null);
     }
+
+    @Override
+    @Transactional
+    public void creerTrajet(CovoiturageRequestDTO dto, Utilisateur utilisateur) {
+        Voiture voiture = voitureRepository.findByImmatriculation(dto.getVoiture().getImmatriculation())
+                .orElseThrow(() -> new NotFoundException("Véhicule introuvable"));
+
+        LocalDate dateDep = LocalDate.parse(dto.getDateDepart());
+        LocalDate dateArr = LocalDate.parse(dto.getDateArrivee());
+        LocalTime heureDep = LocalTime.parse(dto.getHeureDepart());
+        LocalTime heureArr = LocalTime.parse(dto.getHeureArrivee());
+
+        LocalDateTime dateHeureDep = LocalDateTime.of(dateDep, heureDep);
+        LocalDateTime dateHeureArr = LocalDateTime.of(dateArr, heureArr);
+
+        Covoiturage covoiturage = Covoiturage.builder()
+                .lieuDepart(dto.getLieuDepart())
+                .lieuArrivee(dto.getLieuArrivee())
+                .dateArrivee(dateArr)
+                .dateDepart(dateDep)
+                .heureDepart(LocalTime.from(dateHeureDep))
+                .heureArrivee(LocalTime.from(dateHeureArr))
+                .nbPlace(voiture.getNbPlaces())
+                .prixPersonne(dto.getPrixPersonne())
+                .statut("OUVERT")
+                .conducteur(utilisateur)
+                .voiture(voiture)
+                .build();
+
+        covoiturageRepository.save(covoiturage);
+    }
+
 }

@@ -15,4 +15,6 @@ public interface VoitureRepository extends JpaRepository<Voiture, Long> {
     Optional<Voiture> findVoitureByImmatriculationIgnoreCase(String immatriculation);
 
     void deleteVoitureByImmatriculationIgnoreCaseAndUtilisateur_UtilisateurId(String immatriculation, Long utilisateurId);
+
+    Optional<Voiture>findByImmatriculation(String immatriculation);
 }
