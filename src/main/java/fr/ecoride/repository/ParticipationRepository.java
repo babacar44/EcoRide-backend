@@ -14,4 +14,6 @@ public interface ParticipationRepository extends JpaRepository<Participation, Lo
     List<Participation> findAllByPassager(Utilisateur utilisateur);
     List<Participation> findAllByCovoiturage(Covoiturage covoiturage);
     void deleteParticipationsByCovoiturage(Covoiturage covoiturage);
+
+    void deleteParticipationByCovoiturage(Covoiturage covoiturage);
 }

@@ -10,6 +10,7 @@ import fr.ecoride.repository.ParticipationRepository;
 import fr.ecoride.repository.UtilisateurRepository;
 import fr.ecoride.repository.VoitureRepository;
 import fr.ecoride.service.ICovoiturageService;
+import fr.ecoride.service.IMailService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,7 @@ public class CovoiturageServiceImpl implements ICovoiturageService {
     private final VoitureRepository voitureRepository;
     private final ParticipationRepository participationRepository;
     private final UtilisateurRepository utilisateurRepository;
+    private final IMailService mailService;
 
     @Override
     public List<Covoiturage> rechercher(String lieuDepart, String lieuArrivee, LocalDate date) {
@@ -83,20 +85,22 @@ public class CovoiturageServiceImpl implements ICovoiturageService {
     @Override
     @Transactional
     public void annulerTrajet(CovoiturageRequestDTO dto, Utilisateur utilisateur) {
-        Voiture voiture = voitureRepository.findByImmatriculation(dto.getVoiture().getImmatriculation())
-                .orElseThrow(() -> new NotFoundException("Véhicule introuvable"));
-
         Covoiturage covoiturage = covoiturageRepository.findByCovoiturageId(dto.getCovoiturageId());
         if (covoiturage == null) {
-            covoiturage.setNbPlace(voiture.getNbPlaces());
-            covoiturage.setStatut("ANNULE");
+            throw new NotFoundException("Covoiturage introuvable");
         }
         participationRepository.findAllByCovoiturage(covoiturage).forEach(participation -> {
             var user = participation.getPassager();
             user.setCredit(covoiturage.getPrixPersonne().add(participation.getPassager().getCredit()));
             utilisateurRepository.save(user);
+            participationRepository.deleteParticipationByCovoiturage(covoiturage);
+            mailService.envoyerEmail(
+                    user.getEmail(),
+                    "Annulation du covoiturage",
+                    "Le chauffeur " + utilisateur.getPseudo() + " a annulé le covoiturage: "+ dto.getLieuDepart() + " -> " + dto.getLieuArrivee() + " du " + dto.getDateDepart() + " à " + covoiturage.getHeureDepart()
+            );
         });
-        participationRepository.deleteParticipationsByCovoiturage(covoiturage);
+        covoiturage.setStatut("ANNULE");
         covoiturageRepository.save(covoiturage);
     }
 

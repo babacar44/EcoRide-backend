@@ -6,7 +6,7 @@ spring:
   jpa:
     hibernate:
       ddl-auto: none
-    show-sql: true
+    show-sql: false
     properties:
       hibernate.format_sql: true
       hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
@@ -15,6 +15,17 @@ spring:
       mode: always
     schema-locations: classpath:schema.sql
     data-locations: classpath:data.sql
+  mail:
+    host: sandbox.smtp.mailtrap.io
+    port: 587
+    username: 8a8257ddae83bc
+    password: 9c6878321634be
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
 server:
   port: 8083
 
