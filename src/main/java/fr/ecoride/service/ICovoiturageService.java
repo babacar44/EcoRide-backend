@@ -16,4 +16,8 @@ public interface ICovoiturageService {
     Covoiturage getById(Long id);
 
     void creerTrajet(CovoiturageRequestDTO dto, Utilisateur utilisateur);
+
+    List<Covoiturage> getCovoituragesConducteur(Utilisateur utilisateur);
+
+    void annulerTrajet(CovoiturageRequestDTO dto, Utilisateur utilisateur);
 }

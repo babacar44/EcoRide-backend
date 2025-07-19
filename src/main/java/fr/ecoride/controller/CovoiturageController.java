@@ -6,7 +6,9 @@ import fr.ecoride.dto.CovoiturageResponseDTO;
 import fr.ecoride.dto.UtilisateurDTO;
 import fr.ecoride.dto.VoitureDTO;
 import fr.ecoride.model.Covoiturage;
+import fr.ecoride.model.Participation;
 import fr.ecoride.service.ICovoiturageService;
+import fr.ecoride.service.IParticipationService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -26,6 +28,7 @@ import java.util.stream.Collectors;
 public class CovoiturageController {
 
     private final ICovoiturageService covoiturageService;
+    private final IParticipationService participationService;
 
     @GetMapping("/recherche")
     public ResponseEntity<List<CovoiturageResponseDTO>> rechercher(
@@ -45,6 +48,36 @@ public class CovoiturageController {
     public ResponseEntity<?> publierTrajet(@RequestBody CovoiturageRequestDTO dto,
                                            @AuthenticationPrincipal UtilisateurDetails userDetails) {
         covoiturageService.creerTrajet(dto, userDetails.getUtilisateur());
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/mes-trajets")
+    public ResponseEntity<?> getTrajetsConducteur(@AuthenticationPrincipal UtilisateurDetails userDetails) {
+        List<Covoiturage> covoiturages = covoiturageService.getCovoituragesConducteur(userDetails.getUtilisateur());
+
+        List<CovoiturageResponseDTO> dtos = covoiturages.stream()
+                .map(CovoiturageResponseDTO::toDTO)
+                .toList();
+
+        return ResponseEntity.ok(dtos);
+    }
+
+    @GetMapping("/mes-trajets-passager")
+    public ResponseEntity<List<CovoiturageResponseDTO>> getCovoituragesEnTantQuePassager(@AuthenticationPrincipal UtilisateurDetails userDetails) {
+        List<Participation> participations = participationService.findByPassager(userDetails.getUtilisateur());
+
+        List<CovoiturageResponseDTO> dtoList = participations.stream()
+                .map(Participation::getCovoiturage)
+                .map(this::mapToDTO)
+                .toList();
+
+        return ResponseEntity.ok(dtoList);
+    }
+
+    @PutMapping("/annuler")
+    public ResponseEntity<?> annulerTrajet(@RequestBody CovoiturageRequestDTO dto,
+                                           @AuthenticationPrincipal UtilisateurDetails userDetails) {
+        covoiturageService.annulerTrajet(dto, userDetails.getUtilisateur());
         return ResponseEntity.ok().build();
     }
 

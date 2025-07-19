@@ -21,4 +21,10 @@ public class ParticipationController {
         participationService.participer(request.getCovoiturageId(), userDetails.getUtilisateur().getUtilisateurId());
         return ResponseEntity.ok().build();
     }
+
+    @DeleteMapping
+    public ResponseEntity<?> quitter(@RequestBody ParticipationRequestDTO request, @AuthenticationPrincipal UtilisateurDetails userDetails) {
+        participationService.quitter(request.getCovoiturageId(), userDetails.getUtilisateur().getUtilisateurId());
+        return ResponseEntity.ok().build();
+    }
 }

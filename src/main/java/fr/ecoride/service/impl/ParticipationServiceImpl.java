@@ -9,8 +9,11 @@ import fr.ecoride.repository.CovoiturageRepository;
 import fr.ecoride.repository.ParticipationRepository;
 import fr.ecoride.repository.UtilisateurRepository;
 import fr.ecoride.service.IParticipationService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -21,6 +24,7 @@ public class ParticipationServiceImpl implements IParticipationService {
     private final ParticipationRepository participationRepository;
 
     @Override
+    @Transactional
     public void participer(Long covoiturageId, Long utilisateurId) {
         Covoiturage covoiturage = covoiturageRepository.findById(covoiturageId)
                 .orElseThrow(() -> new NotFoundException("Covoiturage non trouvé"));
@@ -46,6 +50,30 @@ public class ParticipationServiceImpl implements IParticipationService {
         passager.setCredit(passager.getCredit().subtract(covoiturage.getPrixPersonne()));
         utilisateurRepository.save(passager);
         covoiturage.setNbPlace(covoiturage.getNbPlace() - 1);
+        covoiturageRepository.save(covoiturage);
+    }
+
+    @Override
+    public List<Participation> findByPassager(Utilisateur utilisateur) {
+        return participationRepository.findAllByPassager(utilisateur);
+    }
+
+    @Override
+    @Transactional
+    public void quitter(Long covoiturageId, Long utilisateurId) {
+        Covoiturage covoiturage = covoiturageRepository.findById(covoiturageId)
+                .orElseThrow(() -> new NotFoundException("Covoiturage non trouvé"));
+        Utilisateur passager = utilisateurRepository.findById(utilisateurId)
+                .orElseThrow(() -> new NotFoundException("Utilisateur non trouvé"));
+
+        var dejaParticipe = participationRepository.findParticipationByPassagerAndCovoiturage(passager,covoiturage);
+        if (dejaParticipe == null) {
+            throw new BusinessException("non inscrit à ce covoiturage");
+        }
+        participationRepository.delete(dejaParticipe);
+        passager.setCredit(passager.getCredit().add(covoiturage.getPrixPersonne()));
+        utilisateurRepository.save(passager);
+        covoiturage.setNbPlace(covoiturage.getNbPlace() + 1);
         covoiturageRepository.save(covoiturage);
     }
 }

@@ -6,6 +6,8 @@ import fr.ecoride.model.Covoiturage;
 import fr.ecoride.model.Utilisateur;
 import fr.ecoride.model.Voiture;
 import fr.ecoride.repository.CovoiturageRepository;
+import fr.ecoride.repository.ParticipationRepository;
+import fr.ecoride.repository.UtilisateurRepository;
 import fr.ecoride.repository.VoitureRepository;
 import fr.ecoride.service.ICovoiturageService;
 import jakarta.transaction.Transactional;
@@ -23,6 +25,8 @@ public class CovoiturageServiceImpl implements ICovoiturageService {
 
     private final CovoiturageRepository covoiturageRepository;
     private final VoitureRepository voitureRepository;
+    private final ParticipationRepository participationRepository;
+    private final UtilisateurRepository utilisateurRepository;
 
     @Override
     public List<Covoiturage> rechercher(String lieuDepart, String lieuArrivee, LocalDate date) {
@@ -68,6 +72,31 @@ public class CovoiturageServiceImpl implements ICovoiturageService {
                 .voiture(voiture)
                 .build();
 
+        covoiturageRepository.save(covoiturage);
+    }
+
+    @Override
+    public List<Covoiturage> getCovoituragesConducteur(Utilisateur utilisateur) {
+        return covoiturageRepository.findAllByConducteur(utilisateur);
+    }
+
+    @Override
+    @Transactional
+    public void annulerTrajet(CovoiturageRequestDTO dto, Utilisateur utilisateur) {
+        Voiture voiture = voitureRepository.findByImmatriculation(dto.getVoiture().getImmatriculation())
+                .orElseThrow(() -> new NotFoundException("Véhicule introuvable"));
+
+        Covoiturage covoiturage = covoiturageRepository.findByCovoiturageId(dto.getCovoiturageId());
+        if (covoiturage == null) {
+            covoiturage.setNbPlace(voiture.getNbPlaces());
+            covoiturage.setStatut("ANNULE");
+        }
+        participationRepository.findAllByCovoiturage(covoiturage).forEach(participation -> {
+            var user = participation.getPassager();
+            user.setCredit(covoiturage.getPrixPersonne().add(participation.getPassager().getCredit()));
+            utilisateurRepository.save(user);
+        });
+        participationRepository.deleteParticipationsByCovoiturage(covoiturage);
         covoiturageRepository.save(covoiturage);
     }
 
