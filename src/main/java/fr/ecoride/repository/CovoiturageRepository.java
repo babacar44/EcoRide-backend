@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface CovoiturageRepository extends JpaRepository<Covoiturage, Long> {
 
-    List<Covoiturage> findByLieuDepartIgnoreCaseAndLieuArriveeIgnoreCaseAndDateDepart(String lieuDepart, String lieuArrivee, LocalDate date);
+    List<Covoiturage> findByLieuDepartIgnoreCaseAndLieuArriveeIgnoreCaseAndDateDepartAndStatut(String lieuDepart, String lieuArrivee, LocalDate date, String statut);
     List<Covoiturage> findAllByConducteur(Utilisateur utilisateur);
     Covoiturage findByCovoiturageId(Long covoiturageId);
 

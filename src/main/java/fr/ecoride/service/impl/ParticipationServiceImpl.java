@@ -44,7 +44,7 @@ public class ParticipationServiceImpl implements IParticipationService {
                 .passager(passager)
                 .covoiturage(covoiturage)
                 .confirme(true)
-                .valide(false)
+                .valide(true)
                 .build();
         participationRepository.save(participation);
         passager.setCredit(passager.getCredit().subtract(covoiturage.getPrixPersonne()));

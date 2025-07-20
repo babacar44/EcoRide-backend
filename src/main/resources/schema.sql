@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS utilisateur_role, avis, covoiturage, voiture, marque, parametre, configuration, role, utilisateur CASCADE;
+DROP TABLE IF EXISTS utilisateur_role, avis,participation, covoiturage, voiture, marque, parametre, configuration, role, utilisateur CASCADE;
 
 -- UTILISATEUR
 CREATE TABLE utilisateur (
@@ -64,6 +64,20 @@ CREATE TABLE covoiturage (
     prix_personne FLOAT,
     utilisateur_id INT REFERENCES utilisateur(utilisateur_id),
     voiture_id INT REFERENCES voiture(voiture_id)
+);
+
+-- PARTICIPATION
+CREATE TABLE participation (
+      id SERIAL PRIMARY KEY,
+      confirme BOOLEAN DEFAULT FALSE,
+      valide BOOLEAN DEFAULT FALSE,
+      avis_statut BOOLEAN DEFAULT FALSE,
+      avis_commentaire TEXT,
+      avis_note INT,
+      avis_valide BOOLEAN DEFAULT FALSE,
+      avis_date DATE,
+      passager_id INT REFERENCES utilisateur(utilisateur_id),
+      covoiturage_id INT REFERENCES covoiturage(covoiturage_id)
 );
 
 -- AVIS

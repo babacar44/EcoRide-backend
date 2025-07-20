@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
@@ -33,7 +34,7 @@ public class CovoiturageServiceImpl implements ICovoiturageService {
     @Override
     public List<Covoiturage> rechercher(String lieuDepart, String lieuArrivee, LocalDate date) {
         return covoiturageRepository
-                .findByLieuDepartIgnoreCaseAndLieuArriveeIgnoreCaseAndDateDepart(lieuDepart, lieuArrivee, date);
+                .findByLieuDepartIgnoreCaseAndLieuArriveeIgnoreCaseAndDateDepartAndStatut(lieuDepart, lieuArrivee, date, "OUVERT");
     }
 
     @Override
@@ -103,5 +104,80 @@ public class CovoiturageServiceImpl implements ICovoiturageService {
         covoiturage.setStatut("ANNULE");
         covoiturageRepository.save(covoiturage);
     }
+
+    @Override
+    @Transactional
+    public void demarrerTrajet(CovoiturageRequestDTO dto, Utilisateur user) {
+        Covoiturage covoiturage = covoiturageRepository.findByCovoiturageId(dto.getCovoiturageId());
+        if (covoiturage == null) {
+            throw new NotFoundException("Covoiturage introuvable");
+        }
+        covoiturage.setStatut("EN_COURS");
+        covoiturageRepository.save(covoiturage);
+    }
+
+    @Override
+    @Transactional
+    public void terminerTrajet(CovoiturageRequestDTO dto, Utilisateur chauffeur) {
+        Covoiturage covoiturage = covoiturageRepository.findByCovoiturageId(dto.getCovoiturageId());
+        if (covoiturage == null) {
+            throw new NotFoundException("Covoiturage introuvable");
+        }
+        participationRepository.findAllByCovoiturage(covoiturage).forEach(participation -> {
+            var user = participation.getPassager();
+            String contenu = genererContenuMailConfirmation(
+                    user.getPrenom(),
+                    covoiturage.getLieuDepart(),
+                    covoiturage.getLieuArrivee(),
+                    covoiturage.getDateDepart(),
+                    covoiturage.getConducteur().getPrenom(),
+                    covoiturage.getConducteur().getNom()
+            );
+            mailService.envoyerEmail(
+                    user.getEmail(),
+                    "Confirmez votre EcoRide",
+                    contenu
+            );
+        });
+        covoiturage.setStatut("TERMINE");
+        covoiturageRepository.save(covoiturage);
+    }
+
+    @Override
+    public Covoiturage rechercherById(Long covoiturageId) {
+        return covoiturageRepository.findByCovoiturageId(covoiturageId);
+    }
+
+    public String genererContenuMailConfirmation(String prenomPassager, String lieuDepart, String lieuArrivee,
+                                                 LocalDate dateTrajet, String prenomConducteur, String nomConducteur) {
+        return String.format("""
+        ✉️ Objet : Confirmez votre trajet EcoRide
+
+        Bonjour %s,
+
+        Votre trajet EcoRide de %s à %s du %s a été marqué comme terminé par le conducteur %s %s.
+
+        Nous vous invitons à vous rendre dans votre espace personnel afin de :
+
+        ✅ Confirmer que tout s’est bien passé
+        ⭐ Laisser un avis et une note au conducteur
+
+        Cela nous permet de garantir la qualité de service et d’assurer le bon fonctionnement de la plateforme.
+        Si vous avez rencontré un problème, vous pourrez nous le signaler directement dans l’interface.
+
+        👉 Se rendre sur mon espace EcoRide
+
+        Merci pour votre confiance,
+        L’équipe EcoRide
+        """,
+                prenomPassager,
+                lieuDepart,
+                lieuArrivee,
+                dateTrajet.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
+                prenomConducteur,
+                nomConducteur
+        );
+    }
+
 
 }

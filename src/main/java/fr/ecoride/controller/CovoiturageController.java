@@ -9,7 +9,6 @@ import fr.ecoride.model.Covoiturage;
 import fr.ecoride.model.Participation;
 import fr.ecoride.service.ICovoiturageService;
 import fr.ecoride.service.IParticipationService;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +19,6 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Tag(name = "Covoiturages", description = "API des covoiturages")
 @RestController
 @RequestMapping("/api/covoiturages")
 @RequiredArgsConstructor
@@ -43,6 +41,15 @@ public class CovoiturageController {
                         .collect(Collectors.toList())
         );
     }
+
+    @GetMapping("/rechercherById")
+    public ResponseEntity<CovoiturageResponseDTO> rechercherById(
+            @RequestParam Long covoiturageId
+    ) {
+        Covoiturage resultat = covoiturageService.rechercherById(covoiturageId);
+        return ResponseEntity.ok(mapToDTO(resultat));
+    }
+
 
     @PostMapping("/creer")
     public ResponseEntity<?> publierTrajet(@RequestBody CovoiturageRequestDTO dto,
@@ -78,6 +85,18 @@ public class CovoiturageController {
     public ResponseEntity<?> annulerTrajet(@RequestBody CovoiturageRequestDTO dto,
                                            @AuthenticationPrincipal UtilisateurDetails userDetails) {
         covoiturageService.annulerTrajet(dto, userDetails.getUtilisateur());
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/demarrer")
+    public ResponseEntity<?> demarrerCovoiturage(@RequestBody CovoiturageRequestDTO dto, @AuthenticationPrincipal UtilisateurDetails userDetails) {
+        covoiturageService.demarrerTrajet(dto, userDetails.getUtilisateur());
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/terminer")
+    public ResponseEntity<?> terminerCovoiturage(@RequestBody CovoiturageRequestDTO dto, @AuthenticationPrincipal UtilisateurDetails userDetails) {
+        covoiturageService.terminerTrajet(dto, userDetails.getUtilisateur());
         return ResponseEntity.ok().build();
     }
 

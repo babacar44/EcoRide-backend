@@ -10,10 +10,9 @@ import java.util.List;
 public interface ParticipationRepository extends JpaRepository<Participation, Long> {
     boolean existsByPassagerAndCovoiturage(Utilisateur passager, Covoiturage covoiturage);
     Participation findParticipationByPassagerAndCovoiturage(Utilisateur passager, Covoiturage covoiturage);
-
     List<Participation> findAllByPassager(Utilisateur utilisateur);
     List<Participation> findAllByCovoiturage(Covoiturage covoiturage);
     void deleteParticipationsByCovoiturage(Covoiturage covoiturage);
-
     void deleteParticipationByCovoiturage(Covoiturage covoiturage);
+    Participation findParticipationByCovoiturageAndPassager(Covoiturage covoiturage, Utilisateur passager);
 }
