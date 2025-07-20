@@ -15,4 +15,8 @@ public interface ParticipationRepository extends JpaRepository<Participation, Lo
     void deleteParticipationsByCovoiturage(Covoiturage covoiturage);
     void deleteParticipationByCovoiturage(Covoiturage covoiturage);
     Participation findParticipationByCovoiturageAndPassager(Covoiturage covoiturage, Utilisateur passager);
+
+    List<Participation> findAllByValideIsFalseAndAvisStatutIsFalseAndAvisDateNotNull();
+
+    Participation findParticipationByIdAndCovoiturage(Long id ,Covoiturage covoiturage);
 }

@@ -41,6 +41,7 @@ public class AvisServiceImpl implements IAvisService {
         participation.setAvisNote(dto.getNote());
         participation.setAvisDate(LocalDate.now());
         participation.setAvisStatut(dto.getStatut());
+        participation.setValide(dto.getStatut());
 
         participationRepository.save(participation);
         var participations =  participationRepository.findAllByCovoiturage(covoiturage);
