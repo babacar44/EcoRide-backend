@@ -120,8 +120,8 @@ public class CovoiturageController {
                         .email(cov.getConducteur().getEmail())
                         .pseudo(cov.getConducteur().getPseudo())
                         .photo(cov.getConducteur().getPhoto())
-                        .suspendu(false) // à adapter si le champ existe
-                        .credit(cov.getConducteur().getCredit())    // à adapter selon les besoins
+                        .suspendu(false)
+                        .credit(cov.getConducteur().getCredit())
                         .build())
                 .voiture(VoitureDTO.builder()
                         .voitureId(cov.getVoiture().getVoitureId())

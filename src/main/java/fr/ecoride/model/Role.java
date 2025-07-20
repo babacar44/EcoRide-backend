@@ -14,4 +14,8 @@ public class Role {
     private Long roleId;
 
     private String libelle;
+
+    public Role(String libelle) {
+        this.libelle = libelle;
+    }
 }

@@ -13,14 +13,16 @@ VALUES
 
     ('Dubois', 'Florent', 'florent.dubois@example.com',
      '$2a$10$dQtD3BVqu.7vcv.PnPbLG.nO1gKB0nI7JSLBaadn94EJbmb7KVBcG',
-     '0723408166', '294 Cours Emile Zola de Lyon', '1991-11-23', NULL, 'flodubois', 20, false, 'CHAUFFEUR');
+     '0723408166', '294 Cours Emile Zola de Lyon', '1991-11-23', NULL, 'flodubois', 20, false, NULL),
 
-
+    ('Dumoulin', 'Allain', 'dumoulin.allain@example.com',
+    '$2a$10$dQtD3BVqu.7vcv.PnPbLG.nO1gKB0nI7JSLBaadn94EJbmb7KVBcG',
+    '0723408166', '124 Cours Emile Zola de Lyon', '1990-09-23', NULL, 'dumoulinallain', 20, false, NULL);
 -- Rôles
 INSERT INTO role (libelle) VALUES ('USER'), ('ADMIN'), ('EMPLOYE');
 
 -- Liens utilisateur-role
-INSERT INTO utilisateur_role (utilisateur_id, role_id) VALUES (1, 1), (2, 1), (3, 3);
+INSERT INTO utilisateur_role (utilisateur_id, role_id) VALUES (1, 1), (2, 1), (3, 3), (4, 2);
 
 -- Marques
 INSERT INTO marque (libelle) VALUES ('Renault'), ('Tesla');

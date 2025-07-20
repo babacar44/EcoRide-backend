@@ -87,8 +87,8 @@ CREATE TABLE avis (
     commentaire TEXT,
     note INT,
     statut VARCHAR(20),
-    auteur_id INT REFERENCES utilisateur(auteur_id),
-    destinataire_id INT REFERENCES utilisateur(destinataire_id)
+    auteur_id INT REFERENCES utilisateur(utilisateur_id),
+    destinataire_id INT REFERENCES utilisateur(utilisateur_id)
 );
 
 -- PARAMETRE

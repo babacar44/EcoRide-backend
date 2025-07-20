@@ -55,7 +55,8 @@ public class AvisServiceImpl implements IAvisService {
         if (participationsKO.isEmpty()) {
           var prixPersonne =  covoiturage.getPrixPersonne();
           var user = covoiturage.getConducteur();
-          user.setCredit(user.getCredit().add(prixPersonne.multiply(BigDecimal.valueOf(participations.size()))));
+          var prixMoins2 = prixPersonne.subtract(BigDecimal.valueOf(2));
+          user.setCredit(user.getCredit().add(prixMoins2.multiply(BigDecimal.valueOf(participations.size()))));
           utilisateurRepository.save(user);
         }
         var participationsNotees = participations.
