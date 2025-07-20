@@ -9,4 +9,6 @@ public interface ISignalementService {
     List<SignalementDTO> getAllSignalementsMalPasses();
 
     void valider(SignalementDTO signalementDTO);
+
+    void validerAvis(Long id);
 }

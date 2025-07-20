@@ -13,11 +13,16 @@ public class Avis {
     @Column(name = "avis_id")
     private Long avisId;
 
+    @Column(name = "commentaire", columnDefinition = "TEXT")
     private String commentaire;
-    private String note;
+    private int note;
     private String statut;
 
     @ManyToOne
-    @JoinColumn(name = "utilisateur_id")
+    @JoinColumn(name = "auteur_id")
     private Utilisateur auteur;
+
+    @ManyToOne
+    @JoinColumn(name = "destinataire_id")
+    private Utilisateur destinataire;
 }

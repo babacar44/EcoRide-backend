@@ -19,4 +19,6 @@ public interface ParticipationRepository extends JpaRepository<Participation, Lo
     List<Participation> findAllByValideIsFalseAndAvisStatutIsFalseAndAvisDateNotNull();
 
     Participation findParticipationByIdAndCovoiturage(Long id ,Covoiturage covoiturage);
+
+    List<Participation> findParticipationsByPublierAvisIsNull();
 }

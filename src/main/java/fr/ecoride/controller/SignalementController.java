@@ -1,6 +1,8 @@
 package fr.ecoride.controller;
 
+import fr.ecoride.dto.AvisResponseDTO;
 import fr.ecoride.dto.SignalementDTO;
+import fr.ecoride.service.IAvisService;
 import fr.ecoride.service.ISignalementService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +17,7 @@ import java.util.List;
 public class SignalementController {
 
     private final ISignalementService signalementService;
+    private final IAvisService avisService;
 
     @GetMapping
     public ResponseEntity<List<SignalementDTO>> signalements() {
@@ -28,4 +31,14 @@ public class SignalementController {
         return ResponseEntity.ok().build();
     }
 
+    @GetMapping("/avis-attente")
+    public ResponseEntity<List<AvisResponseDTO>> getAvisEnAttente(){
+        return ResponseEntity.ok(avisService.getAvisEnAttente());
+    }
+
+    @PostMapping("/avis/{id}/valider")
+    public ResponseEntity<List<SignalementDTO>> validerAvis(@PathVariable Long id) {
+        signalementService.validerAvis(id);
+        return ResponseEntity.ok().build();
+    }
 }

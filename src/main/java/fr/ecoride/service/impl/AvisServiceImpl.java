@@ -1,6 +1,8 @@
 package fr.ecoride.service.impl;
 
 import fr.ecoride.dto.AvisRequestDTO;
+import fr.ecoride.dto.AvisResponseDTO;
+import fr.ecoride.dto.UtilisateurDTO;
 import fr.ecoride.exception.BusinessException;
 import fr.ecoride.exception.NotFoundException;
 import fr.ecoride.model.Utilisateur;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -63,5 +66,38 @@ public class AvisServiceImpl implements IAvisService {
             covoiturage.setStatut("FERME");
             covoiturageRepository.save(covoiturage);
         }
+    }
+
+    @Override
+    public List<AvisResponseDTO> getAvisEnAttente() {
+       var participations =  participationRepository.findParticipationsByPublierAvisIsNull();
+
+       if (participations.isEmpty()) {
+           return List.of();
+       }
+        return participations
+                .stream()
+                .map(participation -> {
+                    var conducteur = participation.getCovoiturage().getConducteur();
+                    var passager = participation.getPassager();
+                    return AvisResponseDTO
+                            .builder()
+                            .publierAvis(participation.getPublierAvis())
+                            .date(participation.getAvisDate().toString())
+                            .note(participation.getAvisNote())
+                            .commentaire(participation.getAvisCommentaire())
+                            .conducteur(UtilisateurDTO
+                                    .builder()
+                                    .pseudo(conducteur.getPseudo())
+                                    .email(conducteur.getEmail())
+                                    .build()
+                            )
+                            .passager(UtilisateurDTO.builder()
+                                    .pseudo(passager.getPseudo())
+                                    .email(passager.getEmail())
+                                    .build())
+                            .id(participation.getId())
+                            .build();
+                }).toList();
     }
 }

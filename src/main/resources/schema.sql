@@ -76,6 +76,7 @@ CREATE TABLE participation (
       avis_note INT,
       avis_valide BOOLEAN DEFAULT FALSE,
       avis_date DATE,
+      publier_avis VARCHAR(10),
       passager_id INT REFERENCES utilisateur(utilisateur_id),
       covoiturage_id INT REFERENCES covoiturage(covoiturage_id)
 );
@@ -84,9 +85,10 @@ CREATE TABLE participation (
 CREATE TABLE avis (
     avis_id SERIAL PRIMARY KEY,
     commentaire TEXT,
-    note VARCHAR(10),
+    note INT,
     statut VARCHAR(20),
-    utilisateur_id INT REFERENCES utilisateur(utilisateur_id)
+    auteur_id INT REFERENCES utilisateur(auteur_id),
+    destinataire_id INT REFERENCES utilisateur(destinataire_id)
 );
 
 -- PARAMETRE

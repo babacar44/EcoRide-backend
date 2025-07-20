@@ -69,11 +69,6 @@ INSERT INTO covoiturage (
       ('2025-08-15', '17:50:00', 'Lyon', '2025-08-15', '20:50:00', 'Paris', 'TERMINE', 1, 21.93, 1, 1),
       ('2025-08-16', '09:17:00', 'Lyon', '2025-08-16', '13:17:00', 'Paris', 'OUVERT', 1, 11.6, 1, 1),
       ('2025-08-17', '15:17:00', 'Lyon', '2025-08-17', '18:17:00', 'Paris', 'OUVERT', 1, 25.91, 2, 2);
--- Avis
-INSERT INTO avis (commentaire, note, statut, utilisateur_id)
-VALUES
-    ('Très bon conducteur', '5', 'VALIDE', 2),
-    ('Voiture propre et trajet agréable', '4', 'VALIDE', 1);
 
 -- Paramètres
 INSERT INTO parametre (propriete, valeur)

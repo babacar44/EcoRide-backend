@@ -4,6 +4,7 @@ import fr.ecoride.dto.SignalementDTO;
 import fr.ecoride.dto.UtilisateurDTO;
 import fr.ecoride.exception.BusinessException;
 import fr.ecoride.exception.NotFoundException;
+import fr.ecoride.model.Avis;
 import fr.ecoride.model.Covoiturage;
 import fr.ecoride.model.Participation;
 import fr.ecoride.model.Utilisateur;
@@ -23,10 +24,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SignalementServiceImpl implements ISignalementService {
 
-    private final AvisRepository avisRepository;
     private final ParticipationRepository participationRepository;
     private final CovoiturageRepository covoiturageRepository;
     private final UtilisateurRepository utilisateurRepository;
+    private final AvisRepository avisRepository;
+
 
     @Override
     public List<SignalementDTO> getAllSignalementsMalPasses() {
@@ -65,6 +67,22 @@ public class SignalementServiceImpl implements ISignalementService {
             user.setCredit(user.getCredit().add(prixPersonne.multiply(BigDecimal.valueOf(participations.size()))));
             utilisateurRepository.save(user);
         }
+    }
+
+    @Override
+    @Transactional
+    public void validerAvis(Long id) {
+      var participation =  participationRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Participation introuvable"));
+      participation.setPublierAvis("VALIDE");
+      var avis = new Avis();
+      avis.setAuteur(participation.getPassager());
+      avis.setDestinataire(participation.getCovoiturage().getConducteur());
+      avis.setStatut("VALIDE");
+      avis.setCommentaire(participation.getAvisCommentaire());
+      avis.setNote(participation.getAvisNote());
+      avisRepository.save(avis);
+      participationRepository.save(participation);
     }
 
     private SignalementDTO mapToDTO(Participation participation) {

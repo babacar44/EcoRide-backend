@@ -24,7 +24,8 @@ public class Participation {
     private boolean avisValide;
     @Column(name = "avis_date")
     private LocalDate avisDate;
-
+    @Column(name = "publier_avis")
+    private String publierAvis;
     @ManyToOne
     @JoinColumn(name = "passager_id")
     private Utilisateur passager;

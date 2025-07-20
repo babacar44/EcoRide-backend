@@ -1,4 +1,7 @@
 spring:
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/ecoride_logs
   datasource:
     url: jdbc:postgresql://localhost:5432/ecoride_dev
     username: postgres
@@ -31,3 +34,6 @@ server:
 
 ecoride:
   env: dev
+
+
+
