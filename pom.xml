@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>fr.ecoride</groupId>
 	<artifactId>ecoride-backend</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.10</version>
 	<name>ecoride-backend</name>
 	<description>Backend for EcoRide project</description>
 	<url/>
@@ -129,6 +129,19 @@
 							<artifactId>lombok</artifactId>
 						</exclude>
 					</excludes>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>com.google.cloud.tools</groupId>
+				<artifactId>jib-maven-plugin</artifactId>
+				<version>3.3.2</version>
+				<configuration>
+					<from>
+						<image>eclipse-temurin:21-jdk</image>
+					</from>
+					<to>
+						<image>babacar44/${project.artifactId}:${project.version}</image>
+					</to>
 				</configuration>
 			</plugin>
 		</plugins>

@@ -22,7 +22,6 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/covoiturages")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:4200")
 public class CovoiturageController {
 
     private final ICovoiturageService covoiturageService;

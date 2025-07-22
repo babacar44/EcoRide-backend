@@ -24,7 +24,6 @@ import static fr.ecoride.mapper.UtilisateurMapper.toDTO;
 @RestController
 @RequestMapping("/api/utilisateurs")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:4200")
 public class UtilisateurController {
 
     private final UtilisateurRepository utilisateurRepository;

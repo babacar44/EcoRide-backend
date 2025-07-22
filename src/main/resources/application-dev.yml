@@ -1,9 +1,11 @@
 spring:
+  application:
+    name : ecoride-backend
   data:
     mongodb:
       uri: mongodb://localhost:27017/ecoride_logs
   datasource:
-    url: jdbc:postgresql://localhost:5432/ecoride_dev
+    url: jdbc:mysql://localhost:3306/ecoride_dev
     username: postgres
     password: devpass
   jpa:
@@ -12,10 +14,10 @@ spring:
     show-sql: false
     properties:
       hibernate.format_sql: true
-      hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
+      hibernate.dialect: org.hibernate.dialect.MySQL8Dialect
   sql:
     init:
-      mode: never
+      mode: always
     schema-locations: classpath:schema.sql
     data-locations: classpath:data.sql
   mail:

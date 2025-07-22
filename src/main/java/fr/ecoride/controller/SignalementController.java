@@ -13,7 +13,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/employe/signalements")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:4200")
 public class SignalementController {
 
     private final ISignalementService signalementService;
