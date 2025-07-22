@@ -4,20 +4,25 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
+@Table(name = "avis")
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
 public class Avis {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "avis_id")
+    private Long avisId;
 
-    private int note;
+    @Column(name = "commentaire", columnDefinition = "TEXT")
     private String commentaire;
-    private boolean valide;
+    private int note;
+    private String statut;
 
     @ManyToOne
+    @JoinColumn(name = "auteur_id")
     private Utilisateur auteur;
 
     @ManyToOne
-    private Utilisateur conducteur;
+    @JoinColumn(name = "destinataire_id")
+    private Utilisateur destinataire;
 }

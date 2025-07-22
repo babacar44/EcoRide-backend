@@ -1,15 +1,41 @@
 spring:
+  application:
+    name : ecoride-backend
+  data:
+    mongodb:
+      uri: "${SPRING_DATASOURCE_URL}"
   datasource:
-    url: jdbc:postgresql://localhost:5432/ecoride_qa
-    username: postgres
-    password: qapass
+    url: "${SPRING_DATASOURCE_URL}"
+    username: "${SPRING_DATASOURCE_PASSWORD}"
+    password: "${SPRING_DATASOURCE_URL}"
   jpa:
     hibernate:
       ddl-auto: update
     show-sql: false
-
+    properties:
+      hibernate.format_sql: true
+      hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
+  sql:
+    init:
+      mode: always
+    schema-locations: classpath:schema.sql
+    data-locations: classpath:data.sql
+  mail:
+    host: sandbox.smtp.mailtrap.io
+    port: 587
+    username: "${MAILER_USER}"
+    password: "${MAILER_PWD}"
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
 server:
   port: 8083
 
 ecoride:
   env: qa
+
+
+

@@ -4,16 +4,12 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
+@Table(name = "configuration")
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
-public class Preference {
+public class Configuration {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    private String label;
-
-    @ManyToOne
-    @JoinColumn(name = "utilisateur_id")
-    private Utilisateur utilisateur;
+    @Column(name = "id_configuration")
+    private Long idConfiguration;
 }

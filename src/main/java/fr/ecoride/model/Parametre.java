@@ -4,16 +4,15 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
+@Table(name = "parametre")
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
-public class Preference {
+public class Parametre {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "parametre_id")
+    private Long parametreId;
 
-    private String label;
-
-    @ManyToOne
-    @JoinColumn(name = "utilisateur_id")
-    private Utilisateur utilisateur;
+    private String propriete;
+    private String valeur;
 }

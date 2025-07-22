@@ -4,16 +4,18 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
+@Table(name = "role")
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
-public class Preference {
+public class Role {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "role_id")
+    private Long roleId;
 
-    private String label;
+    private String libelle;
 
-    @ManyToOne
-    @JoinColumn(name = "utilisateur_id")
-    private Utilisateur utilisateur;
+    public Role(String libelle) {
+        this.libelle = libelle;
+    }
 }
